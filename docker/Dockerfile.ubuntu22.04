@@ -1,6 +1,9 @@
 FROM nvcr.io/nvidia/cuda:12.6.2-base-ubuntu22.04 AS builder
 ARG GOLANG_VERSION=1.22.4
 WORKDIR /go/src/github.com/NVIDIA/dcgm-exporter
+ENV https_proxy=http://172.17.54.139:7890 \
+    http_proxy=http://172.17.54.139:7890 \
+    all_proxy=socks5://172.17.54.139:7890
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \

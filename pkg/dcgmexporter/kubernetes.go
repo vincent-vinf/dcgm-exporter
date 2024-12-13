@@ -147,14 +147,9 @@ func (p *PodMapper) toDeviceToPod(
 		for _, container := range pod.GetContainers() {
 			for _, device := range container.GetDevices() {
 
-				resourceName := device.GetResourceName()
-				if resourceName != nvidiaResourceName && !slices.Contains(p.Config.NvidiaResourceNames, resourceName) {
-					// Mig resources appear differently than GPU resources
-					if !strings.HasPrefix(resourceName, nvidiaMigResourcePrefix) {
-						continue
-					}
+				if !p.isGPUResource(device.GetResourceName()) {
+					continue
 				}
-
 				podInfo := PodInfo{
 					Name:      pod.GetName(),
 					Namespace: pod.GetNamespace(),
@@ -198,4 +193,40 @@ func (p *PodMapper) toDeviceToPod(
 	}
 
 	return deviceToPodMap
+}
+
+var vgpuRe *regexp.Regexp
+
+func init() {
+	vgpuRe = regexp.MustCompile(`^qkd\.sh/.+-(Vgpu|Vmemory)$`)
+}
+
+func (p *PodMapper) isGPUResource(resourceName string) bool {
+	if resourceName == nvidiaResourceName {
+		return true
+	}
+	if slices.Contains(p.Config.NvidiaResourceNames, resourceName) {
+		return true
+	}
+	// Mig resources appear differently than GPU resources
+	if strings.HasPrefix(resourceName, nvidiaMigResourcePrefix) {
+		return true
+	}
+
+	if strings.HasPrefix(resourceName, nvidiaMigResourcePrefix) {
+		return true
+	}
+
+	if vgpuRe.MatchString(resourceName) {
+		// 跳过 qkd.sh/NVIDIA-GeForce-RTX-2080-8GB-Vgpu 和 qkd.sh/NVIDIA-GeForce-RTX-2080-8GB-Vmemory
+		return false
+	}
+
+	if strings.HasPrefix(resourceName, "qkd.sh/") {
+		return true
+	}
+	if strings.HasPrefix(resourceName, "tencent.com/vcuda-core") {
+		return true
+	}
+	return false
 }
