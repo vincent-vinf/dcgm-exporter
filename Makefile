@@ -31,8 +31,8 @@ MODULE         := github.com/NVIDIA/dcgm-exporter
 
 
 .PHONY: all binary install check-format local
-all: update-version ubuntu22.04 ubi9
-
+all: update-version ubuntu22.04
+#all: update-version ubuntu22.04 ubi9
 binary: generate update-version
 	cd cmd/dcgm-exporter; $(GO) build -ldflags "-X main.BuildVersion=${DCGM_VERSION}-${VERSION}"
 
