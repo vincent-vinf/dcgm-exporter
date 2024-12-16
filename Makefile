@@ -14,7 +14,7 @@
 
 include hack/VERSION
 
-REGISTRY             ?= nvidia
+REGISTRY             ?= registry.cn-hangzhou.aliyuncs.com/adpc
 GO                   ?= go
 MKDIR                ?= mkdir
 GOLANGCILINT_TIMEOUT ?= 10m
@@ -72,6 +72,7 @@ $(TARGETS):
 		--build-arg "DCGM_VERSION=$(DCGM_VERSION)" \
 		--build-arg "VERSION=$(VERSION)" \
 		--tag "$(REGISTRY)/dcgm-exporter:$(FULL_VERSION)-$@" \
+		--push \
 		--file $(DOCKERFILE.$@) .
 
 .PHONY: integration
