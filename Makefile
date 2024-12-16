@@ -24,7 +24,8 @@ GOLANG_VERSION := 1.22.5
 VERSION        := $(NEW_EXPORTER_VERSION)
 FULL_VERSION   := $(DCGM_VERSION)-$(VERSION)
 OUTPUT         := type=oci,dest=/dev/null
-PLATFORMS      := linux/amd64,linux/arm64
+PLATFORMS      := linux/amd64
+# ,linux/arm64
 DOCKERCMD      := docker buildx build
 MODULE         := github.com/NVIDIA/dcgm-exporter
 
