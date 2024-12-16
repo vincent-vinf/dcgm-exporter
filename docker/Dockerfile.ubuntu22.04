@@ -45,6 +45,7 @@ ENV PATH $GOPATH/bin:$PATH
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"
 ENV PATH $PATH:/usr/local/go/bin
 COPY . .
+RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod tidy
 RUN make binary check-format
 
