@@ -45,7 +45,7 @@ ENV PATH $GOPATH/bin:$PATH
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"
 ENV PATH $PATH:/usr/local/go/bin
 COPY . .
-
+RUN go mod tidy
 RUN make binary check-format
 
 FROM nvcr.io/nvidia/cuda:12.6.2-base-ubuntu22.04
