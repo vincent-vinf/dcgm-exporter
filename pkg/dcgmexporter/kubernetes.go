@@ -148,6 +148,7 @@ func (p *PodMapper) toDeviceToPod(
 			for _, device := range container.GetDevices() {
 
 				if !p.isGPUResource(device.GetResourceName()) {
+					logrus.Debugf("Resource %s not gpu resource", device.GetResourceName())
 					continue
 				}
 				podInfo := PodInfo{

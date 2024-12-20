@@ -44,9 +44,11 @@ ENV GOPATH /go
 ENV PATH $GOPATH/bin:$PATH
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"
 ENV PATH $PATH:/usr/local/go/bin
-COPY . .
+COPY go.mod go.mod
+COPY go.sum go.sum
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod tidy
+COPY . .
 RUN make binary check-format
 
 FROM nvcr.io/nvidia/cuda:12.6.2-base-ubuntu22.04
