@@ -47,7 +47,7 @@ ENV PATH $PATH:/usr/local/go/bin
 COPY go.mod go.mod
 COPY go.sum go.sum
 RUN go env -w GOPROXY=https://goproxy.cn,direct
-RUN go mod tidy
+RUN go mod tidy && go mod download
 COPY . .
 RUN make binary check-format
 
