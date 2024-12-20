@@ -157,6 +157,7 @@ func (p *PodMapper) toDeviceToPod(
 					Container: container.GetName(),
 				}
 
+				logrus.Debugf("device ids %v", device.GetDeviceIds())
 				for _, deviceID := range device.GetDeviceIds() {
 					if strings.HasPrefix(deviceID, MIG_UUID_PREFIX) {
 						migDevice, err := nvmlGetMIGDeviceInfoByIDHook(deviceID)
