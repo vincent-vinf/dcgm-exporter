@@ -49,7 +49,7 @@ COPY go.sum go.sum
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod tidy && go mod download
 COPY . .
-RUN make binary check-format
+RUN --mount=type=cache,target=/root/.cache/go-build make binary check-format
 
 FROM nvcr.io/nvidia/cuda:12.6.2-base-ubuntu22.04
 
